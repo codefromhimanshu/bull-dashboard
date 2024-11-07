@@ -8,7 +8,22 @@ services:
       context: .
     restart: always
     ports:
-      - 3000:3000
+      - 3005:3005
     environment:
-      REDIS_HOST: host
-      REDIS_PASSWORD: pass
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - USER_LOGIN=${USER_LOGIN:-admin}
+      - REDIS_USE_TLS=${REDIS_USE_TLS:-false}
+      - USER_PASSWORD=${USER_PASSWORD:-admin}
+      - REDIS_DB=${REDIS_DB:-0}
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+
+networks:
+  default:
+    driver: bridge
